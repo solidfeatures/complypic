@@ -66,14 +66,16 @@ export async function POST(req: NextRequest) {
       applied.push(`Applied custom framing (${cropW}×${cropH}px from ${srcW}×${srcH}px)`)
     }
 
+    // If no manual crop, use "attention" to try to find the subject.
+    // If manual crop is present, just fill the target dimensions as the aspect ratio is already correct.
     pipeline = pipeline.resize({
       width,
       height,
       fit,
-      position: "attention",
+      position: cropRegion ? undefined : "attention",
       withoutEnlargement: false,
     })
-    applied.push(`Resized to ${width}×${height}px (${fit})`)
+    applied.push(`Resized to ${width}×${height}px (${fit}${cropRegion ? "" : " + attention"})`)
 
     // Set DPI density in metadata
     pipeline = pipeline.withMetadata({ density: dpi })

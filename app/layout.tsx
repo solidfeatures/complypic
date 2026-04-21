@@ -7,10 +7,9 @@ const _geist = Geist({ subsets: ["latin"] });
 const _geistMono = Geist_Mono({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: 'ComplyPic — AI Image Compliance Tool',
+  title: 'ComplyPic — Professional Image Compliance Tool',
   description:
-    'Upload an image and automatically transform it to meet strict technical requirements: resize, DPI, format, and file size — all in one pass.',
-  generator: 'v0.app',
+    'Effortlessly transform images to meet strict technical specifications. Resize, adjust DPI, and enforce format or file size requirements for professional documents and passports.',
   icons: {
     icon: [
       {

@@ -26,8 +26,18 @@ export function ResultPreview({ originalUrl, result, requirements }: ResultPrevi
   return (
     <div className="space-y-5">
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-        <PreviewPanel label="Before" url={originalUrl} empty="Upload an image" />
-        <PreviewPanel label="After" url={result?.dataUrl ?? null} empty="Process to preview" highlighted />
+        <PreviewPanel 
+          label="Before" 
+          url={originalUrl} 
+          empty="Upload an image" 
+        />
+        <PreviewPanel 
+          label="After" 
+          url={result?.dataUrl ?? null} 
+          empty="Process to preview" 
+          highlighted 
+          aspectRatio={requirements.width / requirements.height}
+        />
       </div>
       {result && (
         <>
@@ -94,6 +104,7 @@ function PreviewPanel({
   url: string | null
   empty: string
   highlighted?: boolean
+  aspectRatio?: number
 }) {
   return (
     <div className="space-y-2">
@@ -102,10 +113,17 @@ function PreviewPanel({
       </div>
       <div
         className={cn(
-          "relative flex aspect-square w-full items-center justify-center overflow-hidden rounded-lg border border-border bg-muted/30",
-          highlighted && "border-primary/30",
+          "relative flex w-full items-center justify-center overflow-hidden rounded-lg border border-border bg-muted/30",
+          !aspectRatio && "aspect-square",
+          highlighted && "border-primary/30 ring-1 ring-primary/10",
         )}
+        style={aspectRatio ? { aspectRatio: String(aspectRatio) } : undefined}
       >
+        {highlighted && url && (
+          <div className="absolute top-2 right-2 z-10 flex items-center gap-1 rounded-full bg-primary/90 px-2 py-0.5 text-[9px] font-black uppercase tracking-widest text-primary-foreground shadow-lg backdrop-blur-md animate-in slide-in-from-top-1">
+            <CheckCircle2 className="size-2.5" /> Final Build
+          </div>
+        )}
         {url ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img 

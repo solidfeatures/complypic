@@ -51,10 +51,11 @@ export function ImageComplianceTool() {
     setCropRegion(null)
   }, [requirements.width, requirements.height])
 
-  const onProcess = async () => {
+  const onProcess = async (targetStep?: number) => {
     if (!file) return
     setProcessing(true)
     setError(null)
+    setResult(null) // Clear stale result for fresh state
     try {
       const formData = new FormData()
       formData.append("file", file)
@@ -74,7 +75,13 @@ export function ImageComplianceTool() {
       const data = await res.json()
       if (!res.ok) throw new Error(data.error || "Processing failed")
       setResult(data as ProcessingResult)
-      setCurrentStep(3)
+      
+      // Navigate to the target step or the default next step
+      if (targetStep) {
+        setCurrentStep(targetStep)
+      } else {
+        setCurrentStep(3)
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : "Processing failed")
     } finally {
@@ -284,8 +291,21 @@ export function ImageComplianceTool() {
                   onClear={() => setCropRegion(null)}
                 />
                 <div className="mt-8 flex justify-center">
-                  <Button size="lg" className="w-full shadow-[0_10px_25px_rgba(6,182,212,0.2)] transition-all" onClick={() => setCurrentStep(4)}>
-                    Done Adjusting <ChevronRight className="ml-2 size-4" />
+                  <Button 
+                    size="lg" 
+                    className="w-full shadow-[0_10px_25px_rgba(6,182,212,0.2)] transition-all" 
+                    onClick={() => onProcess(4)}
+                    disabled={processing}
+                  >
+                    {processing ? (
+                      <>
+                        <Loader2 className="mr-2 size-4 animate-spin" /> Finalizing…
+                      </>
+                    ) : (
+                      <>
+                        Apply & Finish <ChevronRight className="ml-2 size-4" />
+                      </>
+                    )}
                   </Button>
                 </div>
               </CardContent>

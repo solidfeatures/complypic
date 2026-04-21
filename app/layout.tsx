@@ -1,16 +1,11 @@
 import type { Metadata } from 'next'
-import { Outfit, Inter } from 'next/font/google'
+import { Instrument_Sans } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
 
-const outfit = Outfit({ 
+const googleSans = Instrument_Sans({ 
   subsets: ["latin"],
-  variable: '--font-outfit',
-});
-
-const inter = Inter({ 
-  subsets: ["latin"],
-  variable: '--font-inter',
+  variable: '--font-google-sans',
 });
 
 export const metadata: Metadata = {
@@ -42,7 +37,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className={googleSans.variable}>
       <body className="font-sans antialiased selection:bg-primary/20">
         {children}
         {process.env.NODE_ENV === 'production' && <Analytics />}

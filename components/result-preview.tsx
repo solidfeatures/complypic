@@ -99,6 +99,7 @@ function PreviewPanel({
   url,
   empty,
   highlighted,
+  aspectRatio,
 }: {
   label: string
   url: string | null

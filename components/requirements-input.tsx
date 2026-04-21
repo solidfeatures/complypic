@@ -46,52 +46,61 @@ export function RequirementsInput({
     <TooltipProvider>
       <div className="space-y-6">
         {parsedMessage && (
-          <div className="rounded-lg border border-primary/20 bg-primary/5 p-3 text-center text-xs font-medium text-primary animate-in fade-in slide-in-from-top-1">
+          <div className="rounded-lg border border-primary/20 bg-primary/5 p-4 text-center text-xs font-bold uppercase tracking-widest text-primary animate-in fade-in slide-in-from-top-1">
             {parsedMessage}
           </div>
         )}
 
-        {/* Manual Form Controls */}
+        <div className="grid grid-cols-1 gap-x-12 gap-y-10 lg:grid-cols-[1fr_1.4fr]">
+        {/* Left Column: Technical Configuration */}
         <div className="space-y-8">
-          <div className="grid grid-cols-2 gap-5">
-            <div className="space-y-2">
-              <Label htmlFor="width" className="text-xs font-bold uppercase tracking-wider text-muted-foreground/70">Width (px)</Label>
+          <div className="flex items-center gap-2 px-1">
+            <Label className="text-xs font-black uppercase tracking-widest text-primary/60">Manual Configuration</Label>
+            <div className="h-px flex-1 bg-border/50" />
+          </div>
+          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
+            <div className="min-w-0 space-y-2">
+              <div className="flex items-center gap-1.5">
+                <Label htmlFor="width" className="text-xs font-black uppercase tracking-widest text-muted-foreground/60">Width (px)</Label>
+              </div>
               <Input
                 id="width"
                 type="number"
                 value={value.width}
                 onChange={(e) => update("width", Number.parseInt(e.target.value) || 0)}
-                className="h-10 transition-all focus:ring-primary/20"
+                className="h-12 w-full transition-all focus:ring-emerald-500/20"
               />
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="height" className="text-xs font-bold uppercase tracking-wider text-muted-foreground/70">Height (px)</Label>
+            <div className="min-w-0 space-y-2">
+              <div className="flex items-center gap-1.5">
+                <Label htmlFor="height" className="text-xs font-black uppercase tracking-widest text-muted-foreground/60">Height (px)</Label>
+              </div>
               <Input
                 id="height"
                 type="number"
                 value={value.height}
                 onChange={(e) => update("height", Number.parseInt(e.target.value) || 0)}
-                className="h-10 transition-all focus:ring-primary/20"
+                className="h-12 w-full transition-all focus:ring-emerald-500/20"
               />
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-5">
-            <div className="space-y-2">
+          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
+            <div className="min-w-0 space-y-2 text-left">
               <div className="flex items-center gap-1.5">
-                <Label htmlFor="dpi" className="text-xs font-bold uppercase tracking-wider text-muted-foreground/70">DPI</Label>
+                <Label htmlFor="dpi" className="text-xs font-black uppercase tracking-widest text-muted-foreground/60">DPI</Label>
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <HelpCircle className="size-3.5 text-muted-foreground/40 transition-colors hover:text-muted-foreground" />
                   </TooltipTrigger>
                   <TooltipContent>
-                    Dots Per Inch. Higher values (300+) are required for high-quality printing. 72 is standard for web.
+                    Dots Per Inch. 300+ is official standard.
                   </TooltipContent>
                 </Tooltip>
               </div>
               <Select value={String(value.dpi)} onValueChange={(v) => update("dpi", Number.parseInt(v))}>
-                <SelectTrigger id="dpi" className="h-10 transition-all focus:ring-primary/20">
-                  <SelectValue placeholder="DPI" />
+                <SelectTrigger id="dpi" className="h-12 w-full transition-all focus:ring-emerald-500/20">
+                  <SelectValue placeholder="DPI" className="truncate" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="72">72 DPI (Web)</SelectItem>
@@ -101,21 +110,21 @@ export function RequirementsInput({
                 </SelectContent>
               </Select>
             </div>
-            <div className="space-y-2">
+            <div className="min-w-0 space-y-2 text-left">
               <div className="flex items-center gap-1.5">
-                <Label htmlFor="format" className="text-xs font-bold uppercase tracking-wider text-muted-foreground/70">Format</Label>
+                <Label htmlFor="format" className="text-xs font-black uppercase tracking-widest text-muted-foreground/60">Format</Label>
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <HelpCircle className="size-3.5 text-muted-foreground/40 transition-colors hover:text-muted-foreground" />
                   </TooltipTrigger>
                   <TooltipContent>
-                    JPEG is best for photos; PNG/WebP provide better quality but larger files.
+                    JPEG/PNG/WebP options.
                   </TooltipContent>
                 </Tooltip>
               </div>
               <Select value={value.format} onValueChange={(v) => update("format", v as ImageFormat)}>
-                <SelectTrigger id="format" className="h-10 transition-all focus:ring-primary/20">
-                  <SelectValue placeholder="Format" />
+                <SelectTrigger id="format" className="h-12 w-full transition-all focus:ring-emerald-500/20">
+                  <SelectValue placeholder="Format" className="truncate" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="jpeg">JPEG</SelectItem>
@@ -126,50 +135,50 @@ export function RequirementsInput({
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-5">
-            <div className="space-y-2">
+          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
+            <div className="min-w-0 space-y-2 text-left">
               <div className="flex items-center gap-1.5">
-                <Label htmlFor="fit" className="text-xs font-bold uppercase tracking-wider text-muted-foreground/70">Resizing Mode</Label>
+                <Label htmlFor="fit" className="text-xs font-black uppercase tracking-widest text-muted-foreground/60">Resizing</Label>
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <HelpCircle className="size-3.5 text-muted-foreground/40 transition-colors hover:text-muted-foreground" />
                   </TooltipTrigger>
                   <TooltipContent>
-                    <b className="font-bold">Cover</b>: Fills the entire area (may crop edges).<br/>
-                    <b className="font-bold">Contain</b>: Shows specific full image (adds padding).
+                    Crop to Fill or Add Padding.
                   </TooltipContent>
                 </Tooltip>
               </div>
               <Select value={value.fit} onValueChange={(v) => update("fit", v as FitMode)}>
-                <SelectTrigger id="fit" className="h-10 transition-all focus:ring-primary/20">
-                  <SelectValue placeholder="Fit Mode" />
+                <SelectTrigger id="fit" className="h-12 w-full transition-all focus:ring-emerald-500/20">
+                  <SelectValue placeholder="Fit Mode" className="truncate" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="cover">Crop to Fill (Cover)</SelectItem>
-                  <SelectItem value="contain">Add Padding (Contain)</SelectItem>
+                  <SelectItem value="cover">Crop to Fill</SelectItem>
+                  <SelectItem value="contain">Add Padding</SelectItem>
                 </SelectContent>
               </Select>
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="maxSize" className="text-xs font-bold uppercase tracking-wider text-muted-foreground/70">Max File Size (KB)</Label>
+            <div className="min-w-0 space-y-2">
+              <Label htmlFor="maxSize" className="text-xs font-black uppercase tracking-widest text-muted-foreground/60">Max size (kb)</Label>
               <Input
                 id="maxSize"
                 type="number"
                 value={value.maxFileSizeKb || ""}
                 placeholder="Unlimited"
                 onChange={(e) => update("maxFileSizeKb", Number.parseInt(e.target.value) || undefined)}
-                className="h-10 transition-all focus:ring-primary/20"
+                className="h-12 w-full transition-all focus:ring-emerald-500/20"
               />
             </div>
           </div>
         </div>
 
-      <div className="space-y-4 border-t border-border pt-8">
-        <div className="flex items-center justify-between px-1">
-          <Label className="text-[11px] font-black uppercase tracking-[0.2em] text-primary/60">Quick Select Presets</Label>
-          <span className="text-[10px] font-bold text-muted-foreground/40">{PRESETS.length} templates</span>
-        </div>
-        <Accordion type="multiple" className="w-full">
+      {/* Right Column: Industry Presets */}
+      <div className="space-y-6 xl:border-l xl:border-border/50 xl:pl-12">
+          <div className="flex items-center justify-between px-1">
+            <Label className="text-xs font-black uppercase tracking-widest text-primary/60">Quick Select Presets</Label>
+            <span className="text-[10px] font-bold text-muted-foreground/40">{PRESETS.length} templates</span>
+          </div>
+        <Accordion type="single" collapsible className="w-full">
           {Array.from(new Set(PRESETS.map((p) => p.category))).map((category) => {
             const items = PRESETS.filter((p) => p.category === category)
             const hasActive = items.some((p) => p.id === selectedPresetId)
@@ -235,6 +244,7 @@ export function RequirementsInput({
             )
           })}
         </Accordion>
+        </div>
       </div>
     </div>
   </TooltipProvider>

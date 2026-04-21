@@ -12,19 +12,8 @@ interface ResultPreviewProps {
 }
 
 export function ResultPreview({ originalUrl, result, requirements }: ResultPreviewProps) {
-  const download = () => {
-    if (!result) return
-    const a = document.createElement("a")
-    a.href = result.dataUrl
-    const ext = result.format === "jpeg" ? "jpg" : result.format
-    a.download = `compliant-${result.width}x${result.height}-${result.dpi}dpi.${ext}`
-    document.body.appendChild(a)
-    a.click()
-    document.body.removeChild(a)
-  }
-
   return (
-    <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
+    <div className="space-y-4 animate-in fade-in slide-in-from-bottom-4 duration-700">
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
         <PreviewPanel 
           label="Initial Image" 
@@ -41,19 +30,8 @@ export function ResultPreview({ originalUrl, result, requirements }: ResultPrevi
       </div>
 
       {result && (
-        <div className="space-y-8">
-          <div className="flex flex-col gap-4">
-            <ComplianceBanner compliant={result.compliant} issues={result.issues} />
-            
-            <Button 
-              onClick={download} 
-              size="lg" 
-              className="h-14 w-full bg-emerald-600 font-bold uppercase tracking-widest text-white shadow-xl transition-all hover:bg-emerald-700 hover:scale-[1.01] active:scale-[0.98] dark:bg-emerald-500 dark:hover:bg-emerald-600"
-            >
-              <Download className="mr-3 size-5" aria-hidden="true" />
-              Download Compliant File
-            </Button>
-          </div>
+        <div className="space-y-4">
+          <ComplianceBanner compliant={result.compliant} issues={result.issues} />
 
           <div className="space-y-4">
             <div className="flex items-center gap-2 px-1">
@@ -85,7 +63,7 @@ export function ResultPreview({ originalUrl, result, requirements }: ResultPrevi
           </div>
 
           {result.appliedTransformations.length > 0 && (
-            <div className="rounded-2xl border border-border bg-muted/10 p-6">
+            <div className="rounded-2xl border border-border bg-muted/10 p-4">
               <h3 className="mb-4 text-xs font-bold uppercase tracking-widest text-muted-foreground/40">
                 Applied Optimizations
               </h3>
@@ -198,7 +176,7 @@ function Stat({
   ok: boolean
 }) {
   return (
-    <div className="group rounded-2xl border border-border bg-card p-5 transition-all hover:bg-muted/5">
+    <div className="group rounded-2xl border border-border bg-card p-4 transition-all hover:bg-muted/5">
       <div className="flex items-center justify-between">
         <Icon className="size-5 text-muted-foreground/30 transition-colors group-hover:text-primary/60" aria-hidden={true} />
         <span
@@ -211,7 +189,7 @@ function Stat({
           {ok ? "✓" : "!"}
         </span>
       </div>
-      <p className="mt-5 text-[11px] font-bold uppercase tracking-widest text-muted-foreground/40">{label}</p>
+      <p className="mt-3 text-[11px] font-bold uppercase tracking-widest text-muted-foreground/40">{label}</p>
       <p className="font-display text-lg font-black tracking-tight text-foreground">{value}</p>
     </div>
   )

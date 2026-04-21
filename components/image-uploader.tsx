@@ -112,10 +112,16 @@ export function ImageUploader({ file, previewUrl, onChange }: ImageUploaderProps
                   <X className="size-4" aria-hidden="true" />
                 </Button>
               </div>
-              <Button type="button" variant="outline" size="sm" className="w-fit bg-transparent" onClick={onBrowse}>
-                <ImageIcon className="size-3.5" aria-hidden="true" />
-                Replace image
-              </Button>
+                <Button 
+                  type="button" 
+                  variant="outline" 
+                  size="sm" 
+                  className="h-8 w-fit bg-emerald-600/5 px-4 text-[10px] font-black uppercase tracking-widest text-emerald-600 transition-all hover:bg-emerald-600 hover:text-white dark:border-emerald-500/20 dark:text-emerald-400 dark:hover:bg-emerald-500 dark:hover:text-white" 
+                  onClick={onBrowse}
+                >
+                  <ImageIcon className="mr-1.5 size-3.5" aria-hidden="true" />
+                  Replace image
+                </Button>
             </div>
           </div>
         </div>

@@ -9,13 +9,14 @@ export default function Page() {
       <main className="relative min-h-dvh">
         <header className="border-b border-border/60 backdrop-blur-sm">
           <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-4 sm:px-6 lg:px-8">
-            <div className="flex items-center gap-2.5">
-              <div className="flex size-9 items-center justify-center rounded-lg bg-primary shadow-sm shadow-primary/30">
-                <ShieldCheck className="size-4.5 text-primary-foreground" aria-hidden="true" />
+            <div className="flex items-center gap-3">
+              <div className="flex items-center justify-center overflow-hidden rounded-lg">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src="/logo.png" alt="ComplyPic Logo" className="h-9 w-auto object-contain" />
               </div>
               <div>
-                <h1 className="text-sm font-semibold leading-none text-foreground">ComplyPic</h1>
-                <p className="mt-1 text-xs text-muted-foreground">Image compliance in one pass</p>
+                <h1 className="text-sm font-bold leading-none text-foreground">ComplyPic</h1>
+                <p className="mt-1 text-[10px] font-medium uppercase tracking-wider text-muted-foreground/50">Compliance in one pass</p>
               </div>
             </div>
             <div className="hidden items-center gap-1.5 rounded-full border border-border bg-card/80 px-3 py-1 text-xs text-muted-foreground backdrop-blur sm:flex">

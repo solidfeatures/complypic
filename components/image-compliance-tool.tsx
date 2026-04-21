@@ -1,7 +1,7 @@
 "use client"
 
-import { useEffect, useState } from "react"
-import { ChevronLeft, ChevronRight, Loader2, Wand2, Plus } from "lucide-react"
+import { useEffect, useState, useRef } from "react"
+import { ChevronLeft, ChevronRight, Loader2, Wand2, Plus, Download } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { ImageUploader } from "@/components/image-uploader"
@@ -26,6 +26,13 @@ export function ImageComplianceTool() {
   const [error, setError] = useState<string | null>(null)
   const [result, setResult] = useState<ProcessingResult | null>(null)
   const [selectedPresetId, setSelectedPresetId] = useState<string | null>(null)
+  const toolRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (currentStep > 1) {
+      toolRef.current?.scrollIntoView({ behavior: "smooth", block: "start" })
+    }
+  }, [currentStep])
 
   useEffect(() => {
     if (!file) {
@@ -89,6 +96,17 @@ export function ImageComplianceTool() {
     }
   }
 
+  const onDownload = () => {
+    if (!result) return
+    const a = document.createElement("a")
+    a.href = result.dataUrl
+    const ext = result.format === "jpeg" ? "jpg" : result.format
+    a.download = `compliant-${result.width}x${result.height}-${result.dpi}dpi.${ext}`
+    document.body.appendChild(a)
+    a.click()
+    document.body.removeChild(a)
+  }
+
   const canProcess = !!file && requirements.width > 0 && requirements.height > 0 && !processing
   const aspect = requirements.width / requirements.height
   const aspectLabel = `${requirements.width} : ${requirements.height}`
@@ -121,7 +139,7 @@ export function ImageComplianceTool() {
   const prevStep = () => goToStep(currentStep - 1)
 
   return (
-    <div className="relative mx-auto flex max-w-4xl flex-col items-center px-12 md:px-20">
+    <div ref={toolRef} className="relative mx-auto flex max-w-4xl flex-col items-center px-12 md:px-20">
       {/* Side Navigation Buttons (Desktop) */}
 
       {/* Progress Indicator */}
@@ -170,14 +188,17 @@ export function ImageComplianceTool() {
       </div>
 
       {/* Step Navigation - Fixed Header */}
-      <div className="mb-8 flex w-full max-w-2xl items-center justify-between px-2">
+      <div className={cn(
+        "mb-8 flex w-full items-center justify-between px-2 transition-all duration-500",
+        currentStep === 1 ? "max-w-2xl" : "max-w-5xl px-8"
+      )}>
         <Button
-          variant="ghost"
+          variant="outline"
           size="sm"
           onClick={prevStep}
           disabled={currentStep === 1 || processing}
           className={cn(
-            "h-10 px-4 text-xs font-bold uppercase tracking-widest text-muted-foreground/60 transition-all hover:bg-white/5 hover:text-primary",
+            "h-10 border-zinc-200 bg-white/80 px-6 text-xs font-black uppercase tracking-widest text-zinc-600 shadow-sm transition-all hover:bg-zinc-50 hover:text-emerald-600 dark:border-white/10 dark:bg-zinc-900/80 dark:text-zinc-400 dark:hover:bg-zinc-800",
             currentStep === 1 && "opacity-0 pointer-events-none"
           )}
         >
@@ -189,12 +210,10 @@ export function ImageComplianceTool() {
         </div>
 
         <Button
-          variant="ghost"
-          size="sm"
           onClick={nextStep}
           disabled={currentStep === 4 || (currentStep === 1 && !file) || processing}
           className={cn(
-            "h-10 px-4 text-xs font-bold uppercase tracking-widest text-muted-foreground/60 transition-all hover:bg-white/5 hover:text-primary",
+            "h-10 bg-emerald-600 px-6 text-xs font-black uppercase tracking-widest text-white shadow-lg shadow-emerald-600/20 transition-all hover:bg-emerald-700 hover:scale-[1.02] active:scale-[0.98] dark:bg-emerald-500 dark:hover:bg-emerald-600",
             currentStep === 4 && "opacity-0 pointer-events-none"
           )}
         >
@@ -203,7 +222,10 @@ export function ImageComplianceTool() {
       </div>
 
       {/* Active Card Area */}
-      <div className="relative min-h-[580px] w-full max-w-2xl">
+      <div className={cn(
+        "relative min-h-[580px] w-full transition-all duration-500 ease-in-out",
+        currentStep === 1 ? "max-w-2xl" : "max-w-5xl"
+      )}>
         {/* Processing Overlay */}
         {processing && (
           <div className="absolute inset-0 z-50 flex items-center justify-center rounded-xl bg-background/40 backdrop-blur-sm animate-in fade-in duration-300">
@@ -245,7 +267,7 @@ export function ImageComplianceTool() {
                 <CardTitle className="font-display text-3xl font-black tracking-tight text-zinc-950">Step 2: Setup</CardTitle>
                 <CardDescription className="text-sm font-medium text-zinc-400">Define dimensions and technical requirements</CardDescription>
               </CardHeader>
-              <CardContent className="space-y-8 px-10 pb-12">
+              <CardContent className="space-y-8 px-10 pb-8">
                 <RequirementsInput 
                   value={requirements} 
                   onChange={setRequirements} 
@@ -257,7 +279,7 @@ export function ImageComplianceTool() {
                     onClick={() => onProcess()}
                     disabled={!canProcess}
                     size="lg"
-                    className="group mx-auto h-12 px-8 bg-primary font-black uppercase tracking-widest text-primary-foreground shadow-[0_10px_25px_rgba(5,150,105,0.4)] transition-all hover:scale-105 active:scale-95"
+                    className="group mx-auto h-14 bg-emerald-600 px-10 font-black uppercase tracking-widest text-white shadow-xl shadow-emerald-600/20 transition-all hover:bg-emerald-700 hover:scale-[1.02] active:scale-[0.98] dark:bg-emerald-500 dark:hover:bg-emerald-600"
                   >
                     {processing ? (
                       <>
@@ -279,11 +301,11 @@ export function ImageComplianceTool() {
         {currentStep === 3 && (
           <div className="animate-in fade-in slide-in-from-right-8 duration-500">
             <Card className="border-none bg-white shadow-[0_30px_60px_-12px_rgba(0,0,0,0.3)] ring-1 ring-black/5 dark:bg-white dark:text-zinc-950">
-              <CardHeader className="space-y-1 py-8 text-center">
+              <CardHeader className="space-y-1 py-6 text-center">
                 <CardTitle className="font-display text-3xl font-black tracking-tight text-zinc-950">Step 3: Fine-tune</CardTitle>
                 <CardDescription className="text-sm font-medium text-zinc-400">Adjust the focal point and framing manually</CardDescription>
               </CardHeader>
-              <CardContent className="px-10 pb-12">
+              <CardContent className="px-10 pb-8">
                 <CropEditor
                   imageSrc={previewUrl!}
                   aspect={aspect}
@@ -295,7 +317,7 @@ export function ImageComplianceTool() {
                 <div className="mt-8 flex justify-center">
                   <Button 
                     size="lg" 
-                    className="w-full shadow-[0_10px_25px_rgba(6,182,212,0.2)] transition-all" 
+                    className="h-12 w-full bg-emerald-600 font-black uppercase tracking-widest text-white shadow-xl shadow-emerald-600/20 transition-all hover:bg-emerald-700 hover:scale-[1.01] active:scale-[0.98] dark:bg-emerald-500 dark:hover:bg-emerald-600" 
                     onClick={() => onProcess(4)}
                     disabled={processing}
                   >
@@ -319,39 +341,60 @@ export function ImageComplianceTool() {
         {currentStep === 4 && (
           <div className="animate-in zoom-in-95 fade-in duration-500">
             <Card className="border-none bg-white shadow-[0_30px_60px_-12px_rgba(0,0,0,0.4)] ring-1 ring-black/5 dark:bg-white dark:text-zinc-950">
-              <CardHeader className="space-y-1 py-8 text-center">
-                <div className="mx-auto mb-4 flex size-14 items-center justify-center rounded-full bg-emerald-500/10 text-emerald-600 shadow-[0_0_20px_rgba(16,185,129,0.2)]">
-                   <div className="text-2xl font-bold">✓</div>
+              <CardHeader className="space-y-1 py-6 text-center">
+                <div className="flex items-center justify-center gap-3">
+                  <CardTitle className="font-display text-3xl font-black tracking-tight text-zinc-950">Step 4: Result</CardTitle>
+                  <div className="flex size-8 items-center justify-center rounded-full bg-emerald-500/10 text-emerald-600 shadow-[0_0_15px_rgba(16,185,129,0.1)]">
+                    <div className="text-sm font-bold">✓</div>
+                  </div>
                 </div>
-                <CardTitle className="font-display text-3xl font-black tracking-tight text-zinc-950">Step 4: Result</CardTitle>
                 <CardDescription className="text-sm font-medium text-emerald-600/60">Compliance check passed successfully</CardDescription>
               </CardHeader>
-              <CardContent className="px-10 pb-12">
-                <Button 
-                  size="lg" 
-                  variant="secondary"
-                  className="mb-8 w-full font-bold shadow-sm ring-1 ring-black/5 dark:ring-white/10"
-                  onClick={() => {
-                    setFile(null);
-                    setResult(null);
-                    setCropRegion(null);
-                    setSelectedPresetId(null);
-                    setCurrentStep(1);
-                  }}
-                >
-                  <Plus className="mr-2 size-4" /> Upload New Image
-                </Button>
+              <CardContent className="px-10 pb-8">
+                <div className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
+                  <Button 
+                    size="lg" 
+                    className="h-12 bg-emerald-600 font-black uppercase tracking-widest text-white shadow-lg shadow-emerald-600/20 transition-all hover:bg-emerald-700 hover:scale-[1.02] active:scale-[0.98] dark:bg-emerald-500 dark:hover:bg-emerald-600"
+                    onClick={onDownload}
+                  >
+                    <Download className="mr-2 size-4" /> Download Image
+                  </Button>
 
-                <ResultPreview originalUrl={previewUrl} result={result} requirements={requirements} />
-                
-                <div className="mt-10 flex gap-3">
-                  <Button variant="outline" size="lg" className="flex-1 border-zinc-200 text-zinc-700 hover:bg-zinc-50 transition-colors" onClick={() => setCurrentStep(2)}>
+                  <Button 
+                    size="lg" 
+                    variant="outline"
+                    className="h-12 border-zinc-200 font-bold uppercase tracking-widest text-zinc-600 transition-all hover:bg-zinc-50 hover:text-emerald-600 dark:border-white/10 dark:text-zinc-400 dark:hover:bg-zinc-800"
+                    onClick={() => {
+                      setFile(null);
+                      setResult(null);
+                      setCropRegion(null);
+                      setSelectedPresetId(null);
+                      setCurrentStep(1);
+                    }}
+                  >
+                    <Plus className="mr-2 size-4" /> Upload New
+                  </Button>
+
+                  <Button 
+                    variant="outline" 
+                    size="lg" 
+                    className="h-12 border-zinc-200 font-bold uppercase tracking-widest text-zinc-600 transition-all hover:bg-zinc-50 hover:text-emerald-600 dark:border-white/10 dark:text-zinc-400 dark:hover:bg-zinc-800" 
+                    onClick={() => setCurrentStep(2)}
+                  >
                     Refactor Specs
                   </Button>
-                  <Button variant="outline" size="lg" className="flex-1 border-zinc-200 text-zinc-700 hover:bg-zinc-50 transition-colors" onClick={() => setCurrentStep(3)}>
+
+                  <Button 
+                    variant="outline" 
+                    size="lg" 
+                    className="h-12 border-zinc-200 font-bold uppercase tracking-widest text-zinc-600 transition-all hover:bg-zinc-50 hover:text-emerald-600 dark:border-white/10 dark:text-zinc-400 dark:hover:bg-zinc-800" 
+                    onClick={() => setCurrentStep(3)}
+                  >
                     Re-Adjust Frame
                   </Button>
                 </div>
+
+                <ResultPreview originalUrl={previewUrl} result={result} requirements={requirements} />
               </CardContent>
             </Card>
           </div>

@@ -76,6 +76,7 @@ export function ResultPreview({ originalUrl, result, requirements }: ResultPrevi
             />
           </div>
 
+          {result.appliedTransformations.length > 0 && (
             <div className="rounded-xl border border-border bg-muted/20 p-5">
               <h3 className="mb-4 text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground/40">
                 Applied Transformations

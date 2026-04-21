@@ -42,8 +42,12 @@ export function ResultPreview({ originalUrl, result, requirements }: ResultPrevi
       {result && (
         <>
           <div className="flex gap-3">
-            <Button onClick={download} size="lg" className="w-full">
-              <Download className="mr-2 size-4" aria-hidden="true" />
+            <Button 
+              onClick={download} 
+              size="lg" 
+              className="w-full bg-emerald-600 font-black uppercase tracking-widest text-white shadow-[0_10px_20px_rgba(5,150,105,0.3)] transition-all hover:bg-emerald-700 hover:scale-[1.01] active:scale-[0.99] dark:bg-emerald-500 dark:hover:bg-emerald-600"
+            >
+              <Download className="mr-2 size-5" aria-hidden="true" />
               Download compliant image
             </Button>
           </div>

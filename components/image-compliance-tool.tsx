@@ -256,7 +256,7 @@ export function ImageComplianceTool() {
                   onClick={() => onProcess()}
                   disabled={!canProcess}
                   size="xl"
-                  className="group w-full text-base font-bold shadow-[0_15px_30px_rgba(6,182,212,0.3)] transition-all hover:scale-[1.02] active:scale-[0.98]"
+                  className="group w-full bg-indigo-600 font-bold text-white shadow-[0_15px_30px_rgba(79,70,229,0.3)] transition-all hover:bg-indigo-700 hover:scale-[1.02] active:scale-[0.98] dark:bg-indigo-500 dark:hover:bg-indigo-600"
                 >
                   {processing ? (
                     <>
@@ -327,8 +327,8 @@ export function ImageComplianceTool() {
               <CardContent className="px-8 py-6 pb-12">
                 <Button 
                   size="lg" 
-                  variant="default"
-                  className="mb-8 w-full font-bold shadow-lg"
+                  variant="secondary"
+                  className="mb-8 w-full font-bold shadow-sm ring-1 ring-black/5 dark:ring-white/10"
                   onClick={() => {
                     setFile(null);
                     setResult(null);

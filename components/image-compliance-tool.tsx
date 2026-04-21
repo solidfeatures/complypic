@@ -252,22 +252,24 @@ export function ImageComplianceTool() {
                   selectedPresetId={selectedPresetId}
                   onPresetSelect={setSelectedPresetId}
                 />
-                <Button
-                  onClick={() => onProcess()}
-                  disabled={!canProcess}
-                  size="xl"
-                  className="group w-full bg-indigo-600 font-bold text-white shadow-[0_15px_30px_rgba(79,70,229,0.3)] transition-all hover:bg-indigo-700 hover:scale-[1.02] active:scale-[0.98] dark:bg-indigo-500 dark:hover:bg-indigo-600"
-                >
-                  {processing ? (
-                    <>
-                      <Loader2 className="mr-2 size-5 animate-spin" /> Analyzing Specs…
-                    </>
-                  ) : (
-                    <>
-                      <Wand2 className="mr-2 size-5 transition-transform group-hover:rotate-12" /> Generate Compliant Image
-                    </>
-                  )}
-                </Button>
+                <div className="flex justify-center">
+                  <Button
+                    onClick={() => onProcess()}
+                    disabled={!canProcess}
+                    size="lg"
+                    className="group mx-auto h-12 px-8 bg-primary font-black uppercase tracking-widest text-primary-foreground shadow-[0_10px_25px_rgba(5,150,105,0.4)] transition-all hover:scale-105 active:scale-95"
+                  >
+                    {processing ? (
+                      <>
+                        <Loader2 className="mr-2 size-5 animate-spin" /> Analyzing…
+                      </>
+                    ) : (
+                      <>
+                        <Wand2 className="mr-2 size-5 transition-transform group-hover:rotate-12" /> Generate Image
+                      </>
+                    )}
+                  </Button>
+                </div>
               </CardContent>
             </Card>
           </div>

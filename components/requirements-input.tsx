@@ -12,6 +12,8 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 import { HelpCircle } from "lucide-react"
 import { type ComplianceRequirements, type ImageFormat, type FitMode, PRESETS } from "@/lib/compliance-types"
 import { cn } from "@/lib/utils"
+import { Switch } from "@/components/ui/switch"
+import { Sparkles } from "lucide-react"
 
 interface RequirementsInputProps {
   value: ComplianceRequirements
@@ -167,6 +169,26 @@ export function RequirementsInput({
                 placeholder="Unlimited"
                 onChange={(e) => update("maxFileSizeKb", Number.parseInt(e.target.value) || undefined)}
                 className="h-12 w-full transition-all focus:ring-emerald-500/20"
+              />
+            </div>
+          </div>
+
+          <div className="rounded-xl border border-emerald-500/20 bg-emerald-500/5 p-4 transition-all hover:bg-emerald-500/10">
+            <div className="flex items-center justify-between gap-4">
+              <div className="space-y-1">
+                <div className="flex items-center gap-2">
+                  <Label htmlFor="bg-removal" className="cursor-pointer text-sm font-black uppercase tracking-tight text-emerald-950">AI Background Removal</Label>
+                  <span className="rounded-full bg-emerald-500 px-1.5 py-0.5 text-[8px] font-black uppercase tracking-wider text-white">Pro</span>
+                </div>
+                <p className="text-[10px] font-medium leading-tight text-emerald-600/70">
+                  Instantly strip background for official documents (Passport/Visa).
+                </p>
+              </div>
+              <Switch
+                id="bg-removal"
+                checked={value.removeBackground}
+                onCheckedChange={(checked) => update("removeBackground", checked)}
+                className="data-[state=checked]:bg-emerald-500"
               />
             </div>
           </div>

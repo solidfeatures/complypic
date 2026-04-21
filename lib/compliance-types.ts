@@ -19,6 +19,8 @@ export interface ComplianceRequirements {
   maxFileSizeKb?: number
   /** Optional user-adjusted crop region (in source-image pixels). */
   cropRegion?: CropRegion
+  /** Whether to remove background using AI. */
+  removeBackground?: boolean
 }
 
 export interface ProcessingResult {
@@ -39,6 +41,7 @@ export const DEFAULT_REQUIREMENTS: ComplianceRequirements = {
   dpi: 300,
   format: "jpeg",
   fit: "cover",
+  removeBackground: false,
 }
 
 export interface PresetDefinition {

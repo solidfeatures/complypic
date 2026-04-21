@@ -23,6 +23,7 @@ export function ImageComplianceTool() {
   const [requirements, setRequirements] = useState<ComplianceRequirements>(DEFAULT_REQUIREMENTS)
   const [cropRegion, setCropRegion] = useState<CropRegion | null>(null)
   const [processing, setProcessing] = useState(false)
+  const [processingMessage, setProcessingMessage] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [result, setResult] = useState<ProcessingResult | null>(null)
   const [selectedPresetId, setSelectedPresetId] = useState<string | null>(null)
@@ -61,11 +62,36 @@ export function ImageComplianceTool() {
   const onProcess = async (targetStep?: number) => {
     if (!file) return
     setProcessing(true)
+    setProcessingMessage(null)
     setError(null)
-    setResult(null) // Clear stale result for fresh state
+    setResult(null) 
     try {
+      let currentFile = file
+
+      if (requirements.removeBackground) {
+        setProcessingMessage("✨ AI: Detailing subject and removing background...")
+        try {
+          const { removeBackground } = await import("@imgly/background-removal")
+          const blob = await removeBackground(currentFile, {
+            progress: (key, current, total) => {
+                if (key.includes('model')) {
+                    setProcessingMessage(`✨ AI: Loading model (${Math.round((current / total) * 100)}%)...`)
+                } else {
+                    setProcessingMessage("✨ AI: Removing background...")
+                }
+            }
+          })
+          currentFile = new File([blob], file.name, { type: "image/png" })
+        } catch (aiErr) {
+          console.error("AI Background Removal failed:", aiErr)
+          // Fallback to original file or show warning
+          throw new Error("AI Background removal failed. Please check your internet connection for the initial model download.")
+        }
+      }
+
+      setProcessingMessage(null)
       const formData = new FormData()
-      formData.append("file", file)
+      formData.append("file", currentFile)
       formData.append("width", String(requirements.width))
       formData.append("height", String(requirements.height))
       formData.append("dpi", String(requirements.dpi))
@@ -245,11 +271,11 @@ export function ImageComplianceTool() {
         {currentStep === 1 && (
           <div className="animate-in fade-in slide-in-from-right-8 duration-500">
             <Card className="border-none bg-white shadow-[0_30px_60px_-12px_rgba(0,0,0,0.3)] ring-1 ring-black/5 dark:bg-white dark:text-zinc-950">
-              <CardHeader className="space-y-1 py-8 text-center">
+              <CardHeader className="space-y-1 py-6 text-center">
                 <CardTitle className="font-display text-3xl font-black tracking-tight text-zinc-950">Step 1: Upload</CardTitle>
                 <CardDescription className="text-sm font-medium text-zinc-400">Drag and drop your image to begin compliance check</CardDescription>
               </CardHeader>
-              <CardContent className="px-10 pb-12">
+              <CardContent className="px-10 pb-8">
                 <ImageUploader file={file} previewUrl={previewUrl} onChange={setFile} />
                 <div className="mt-8 flex items-center justify-center gap-2 text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-300">
                     Industry standard presets available in Step 2
@@ -263,7 +289,7 @@ export function ImageComplianceTool() {
         {currentStep === 2 && (
           <div className="animate-in fade-in slide-in-from-right-8 duration-500">
             <Card className="border-none bg-white shadow-[0_30px_60px_-12px_rgba(0,0,0,0.3)] ring-1 ring-black/5 dark:bg-white dark:text-zinc-950">
-              <CardHeader className="space-y-1 py-8 text-center">
+              <CardHeader className="space-y-1 py-6 text-center">
                 <CardTitle className="font-display text-3xl font-black tracking-tight text-zinc-950">Step 2: Setup</CardTitle>
                 <CardDescription className="text-sm font-medium text-zinc-400">Define dimensions and technical requirements</CardDescription>
               </CardHeader>
@@ -279,11 +305,11 @@ export function ImageComplianceTool() {
                     onClick={() => onProcess()}
                     disabled={!canProcess}
                     size="lg"
-                    className="group mx-auto h-14 bg-emerald-600 px-10 font-black uppercase tracking-widest text-white shadow-xl shadow-emerald-600/20 transition-all hover:bg-emerald-700 hover:scale-[1.02] active:scale-[0.98] dark:bg-emerald-500 dark:hover:bg-emerald-600"
+                    className="group mx-auto h-12 bg-emerald-600 px-10 font-black uppercase tracking-widest text-white shadow-xl shadow-emerald-600/20 transition-all hover:bg-emerald-700 hover:scale-[1.02] active:scale-[0.98] dark:bg-emerald-500 dark:hover:bg-emerald-600"
                   >
                     {processing ? (
                       <>
-                        <Loader2 className="mr-2 size-5 animate-spin" /> Analyzing…
+                        <Loader2 className="mr-2 size-5 animate-spin" /> {processingMessage || "Analyzing…"}
                       </>
                     ) : (
                       <>
@@ -323,7 +349,8 @@ export function ImageComplianceTool() {
                   >
                     {processing ? (
                       <>
-                        <Loader2 className="mr-2 size-4 animate-spin" /> Finalizing…
+                        <Loader2 className="mr-2 size-4 animate-spin" /> 
+                        {processingMessage || "Finalizing…"}
                       </>
                     ) : (
                       <>

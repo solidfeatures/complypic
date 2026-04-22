@@ -70,7 +70,7 @@ export function ResultPreview({ originalUrl, result, requirements }: ResultPrevi
               <ul className="grid grid-cols-1 gap-2 sm:grid-cols-2">
                 {result.appliedTransformations.map((t, i) => (
                   <li key={i} className="flex items-center gap-3 text-sm text-foreground/80">
-                    <div className="size-1 rounded-full bg-emerald-500" />
+                    <div className="size-1 rounded-full bg-primary" />
                     <span>{t}</span>
                   </li>
                 ))}
@@ -110,7 +110,7 @@ function PreviewPanel({
         style={aspectRatio ? { aspectRatio: String(aspectRatio) } : undefined}
       >
         {highlighted && url && (
-          <div className="absolute top-3 right-3 z-10 flex items-center gap-1.5 rounded-full bg-emerald-500/90 px-3 py-1 text-[10px] font-black uppercase tracking-[0.15em] text-white shadow-xl backdrop-blur-md animate-in slide-in-from-top-2">
+          <div className="absolute top-3 right-3 z-10 flex items-center gap-1.5 rounded-full bg-primary/90 px-3 py-1 text-[10px] font-black uppercase tracking-[0.15em] text-primary-foreground shadow-xl backdrop-blur-md animate-in slide-in-from-top-2">
             <CheckCircle2 className="size-3" /> Final Build
           </div>
         )}
@@ -182,7 +182,7 @@ function Stat({
         <span
           className={cn(
             "inline-flex size-6 items-center justify-center rounded-full text-xs font-black",
-            ok ? "bg-emerald-500/10 text-emerald-600" : "bg-destructive/10 text-destructive",
+            ok ? "bg-primary/10 text-primary" : "bg-destructive/10 text-destructive",
           )}
           aria-label={ok ? "Compliant" : "Non-compliant"}
         >

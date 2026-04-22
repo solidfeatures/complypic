@@ -144,86 +144,88 @@ export function ImageComplianceTool() {
   const prevStep = () => goToStep(currentStep - 1)
 
   return (
-    <div ref={toolRef} className="relative mx-auto flex max-w-4xl flex-col items-center px-12 md:px-20">
+    <div ref={toolRef} className="relative mx-auto flex max-w-6xl flex-col items-center px-6 md:px-12">
       {/* Side Navigation Buttons (Desktop) */}
 
-      {/* Progress Indicator */}
-      <div className="relative mb-10 flex w-full max-w-md items-center justify-between px-2">
-        {/* Connection Line (Inactive) */}
-        <div className="absolute left-8 right-8 h-px bg-muted-foreground/10" />
-        
-        {/* Connection Line (Active) */}
-        <div 
-          className="absolute left-8 h-px bg-primary transition-all duration-500 ease-in-out" 
-          style={{ 
-            width: `${((Math.min(currentStep, steps.length) - 1) / (steps.length - 1)) * (100) - (currentStep === 1 ? 0 : 5)}%`,
-            maxWidth: "calc(100% - 4rem)"
-          }}
-        />
-
-        {steps.map((step) => (
-          <button
-            key={step.id}
-            onClick={() => goToStep(step.id)}
-            disabled={step.id > currentStep + 1}
-            className="group relative z-10 flex flex-col items-center outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-lg transition-all"
-          >
-            <div
-              className={cn(
-                "flex size-9 items-center justify-center rounded-full border-2 transition-all duration-300",
-                currentStep === step.id
-                  ? "border-primary bg-primary text-primary-foreground scale-125 shadow-[0_0_20px_rgba(6,182,212,0.5)]"
-                  : currentStep > step.id
-                    ? "border-primary bg-primary text-primary-foreground"
-                    : "border-muted-foreground/20 bg-[#0a0f14] text-muted-foreground/40 group-hover:border-primary/40 group-hover:text-primary/40"
-              )}
-            >
-              {currentStep > step.id ? "✓" : step.id}
-            </div>
-            <span
-              className={cn(
-                "absolute -bottom-6 whitespace-nowrap text-[10px] font-bold uppercase tracking-[0.2em] transition-colors",
-                currentStep === step.id ? "text-primary" : "text-muted-foreground/40"
-              )}
-            >
-              {step.title}
-            </span>
-          </button>
-        ))}
-      </div>
-
-      {/* Step Navigation - Fixed Header */}
+      {/* Header Navigation & Progress */}
       <div className={cn(
-        "mb-8 flex w-full items-center justify-between px-2 transition-all duration-500",
-        currentStep === 1 ? "max-w-2xl" : "max-w-5xl px-8"
+        "mb-12 flex w-full items-center justify-between transition-all duration-500 ease-in-out",
+        currentStep === 1 ? "max-w-2xl" : "max-w-5xl"
       )}>
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={prevStep}
-          disabled={currentStep === 1 || processing}
-          className={cn(
-            "h-10 border-zinc-200 bg-white/80 px-6 text-xs font-black uppercase tracking-widest text-zinc-600 shadow-sm transition-all hover:bg-zinc-50 hover:text-emerald-600 dark:border-white/10 dark:bg-zinc-900/80 dark:text-zinc-400 dark:hover:bg-zinc-800",
-            currentStep === 1 && "opacity-0 pointer-events-none"
-          )}
-        >
-          <ChevronLeft className="mr-1 size-4 transition-transform group-hover:-translate-x-1" /> Back
-        </Button>
-
-        <div className="font-display text-[11px] font-black uppercase tracking-[0.3em] text-muted-foreground/20">
-          Step {currentStep} of 4
+        {/* Back Button */}
+        <div className="w-32">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={prevStep}
+            disabled={currentStep === 1 || processing}
+            className={cn(
+              "group h-10 border-border bg-card/50 px-5 text-[10px] font-black uppercase tracking-widest text-muted-foreground shadow-sm transition-all hover:bg-secondary hover:text-primary dark:border-border dark:bg-card/50",
+              currentStep === 1 && "opacity-0 pointer-events-none"
+            )}
+          >
+            <ChevronLeft className="mr-1.5 size-3.5 transition-transform group-hover:-translate-x-1" /> Back
+          </Button>
         </div>
 
-        <Button
-          onClick={nextStep}
-          disabled={currentStep === 4 || (currentStep === 1 && !file) || processing}
-          className={cn(
-            "h-10 bg-emerald-600 px-6 text-xs font-black uppercase tracking-widest text-white shadow-lg shadow-emerald-600/20 transition-all hover:bg-emerald-700 hover:scale-[1.02] active:scale-[0.98] dark:bg-emerald-500 dark:hover:bg-emerald-600",
-            currentStep === 4 && "opacity-0 pointer-events-none"
-          )}
-        >
-          Next <ChevronRight className="ml-1 size-4 transition-transform group-hover:translate-x-1" />
-        </Button>
+        {/* Progress Indicator */}
+        <div className="relative flex flex-1 max-w-md items-center justify-between px-2 mx-8">
+          {/* Connection Line (Inactive) */}
+          <div className="absolute left-8 right-8 h-px bg-muted-foreground/10" />
+          
+          {/* Connection Line (Active) */}
+          <div 
+            className="absolute left-8 h-px bg-primary transition-all duration-500 ease-in-out" 
+            style={{ 
+              width: `${((Math.min(currentStep, steps.length) - 1) / (steps.length - 1)) * (100) - (currentStep === 1 ? 0 : 5)}%`,
+              maxWidth: "calc(100% - 4rem)"
+            }}
+          />
+
+          {steps.map((step) => (
+            <button
+              key={step.id}
+              onClick={() => goToStep(step.id)}
+              disabled={step.id > currentStep + 1}
+              className="group relative z-10 flex flex-col items-center outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-lg transition-all"
+            >
+              <div
+                className={cn(
+                  "flex size-8 items-center justify-center rounded-full border-2 transition-all duration-300",
+                  currentStep === step.id
+                    ? "border-primary bg-primary text-primary-foreground scale-110 shadow-[0_0_15px_var(--color-primary)]"
+                    : currentStep > step.id
+                      ? "border-primary bg-primary text-primary-foreground"
+                      : "border-muted-foreground/20 bg-card text-muted-foreground/40 group-hover:border-primary/40 group-hover:text-primary/40"
+                )}
+              >
+                {currentStep > step.id ? "✓" : step.id}
+              </div>
+              <span
+                className={cn(
+                  "absolute -bottom-6 whitespace-nowrap text-[9px] font-bold uppercase tracking-[0.2em] transition-colors",
+                  currentStep === step.id ? "text-primary" : "text-muted-foreground/40"
+                )}
+              >
+                {step.title}
+              </span>
+            </button>
+          ))}
+        </div>
+
+        {/* Next Button */}
+        <div className="w-32 flex justify-end">
+          <Button
+            onClick={nextStep}
+            disabled={currentStep === 4 || (currentStep === 1 && !file) || processing}
+            className={cn(
+              "group h-10 bg-primary px-5 text-[10px] font-black uppercase tracking-widest text-primary-foreground shadow-lg shadow-primary/20 transition-all hover:bg-primary/90 hover:scale-[1.02] active:scale-[0.98]",
+              currentStep === 4 && "opacity-0 pointer-events-none"
+            )}
+          >
+            Next <ChevronRight className="ml-1.5 size-3.5 transition-transform group-hover:translate-x-1" />
+          </Button>
+        </div>
       </div>
 
       {/* Active Card Area */}
@@ -249,14 +251,14 @@ export function ImageComplianceTool() {
         {/* Step 1: Upload */}
         {currentStep === 1 && (
           <div className="animate-in fade-in slide-in-from-right-8 duration-500">
-            <Card className="border-none bg-white shadow-[0_30px_60px_-12px_rgba(0,0,0,0.3)] ring-1 ring-black/5 dark:bg-white dark:text-zinc-950">
+            <Card className="border-border bg-card shadow-[0_30px_60px_-12px_rgba(0,0,0,0.3)] ring-1 ring-border/5">
               <CardHeader className="space-y-1 py-6 text-center">
-                <CardTitle className="font-display text-3xl font-black tracking-tight text-zinc-950">Step 1: Upload</CardTitle>
-                <CardDescription className="text-sm font-medium text-zinc-400">Drag and drop your image to begin compliance check</CardDescription>
+                <CardTitle className="font-display text-3xl font-black tracking-tight text-foreground">Step 1: Upload</CardTitle>
+                <CardDescription className="text-sm font-medium text-muted-foreground">Drag and drop your image to begin compliance check</CardDescription>
               </CardHeader>
               <CardContent className="px-10 pb-8">
                 <ImageUploader file={file} previewUrl={previewUrl} onChange={setFile} />
-                <div className="mt-8 flex items-center justify-center gap-2 text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-300">
+                <div className="mt-8 flex items-center justify-center gap-2 text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/40">
                     Industry standard presets available in Step 2
                 </div>
               </CardContent>
@@ -267,10 +269,10 @@ export function ImageComplianceTool() {
         {/* Step 2: Configure */}
         {currentStep === 2 && (
           <div className="animate-in fade-in slide-in-from-right-8 duration-500">
-            <Card className="border-none bg-white shadow-[0_30px_60px_-12px_rgba(0,0,0,0.3)] ring-1 ring-black/5 dark:bg-white dark:text-zinc-950">
+            <Card className="border-border bg-card shadow-[0_30px_60px_-12px_rgba(0,0,0,0.3)] ring-1 ring-border/5">
               <CardHeader className="space-y-1 py-6 text-center">
-                <CardTitle className="font-display text-3xl font-black tracking-tight text-zinc-950">Step 2: Setup</CardTitle>
-                <CardDescription className="text-sm font-medium text-zinc-400">Define dimensions and technical requirements</CardDescription>
+                <CardTitle className="font-display text-3xl font-black tracking-tight text-foreground">Step 2: Setup</CardTitle>
+                <CardDescription className="text-sm font-medium text-muted-foreground">Define dimensions and technical requirements</CardDescription>
               </CardHeader>
               <CardContent className="space-y-8 px-10 pb-8">
                 <RequirementsInput 
@@ -284,7 +286,7 @@ export function ImageComplianceTool() {
                     onClick={() => onProcess()}
                     disabled={!canProcess}
                     size="lg"
-                    className="group mx-auto h-12 bg-emerald-600 px-10 font-black uppercase tracking-widest text-white shadow-xl shadow-emerald-600/20 transition-all hover:bg-emerald-700 hover:scale-[1.02] active:scale-[0.98] dark:bg-emerald-500 dark:hover:bg-emerald-600"
+                    className="group mx-auto h-12 bg-primary px-10 font-black uppercase tracking-widest text-primary-foreground shadow-xl shadow-primary/20 transition-all hover:bg-primary/90 hover:scale-[1.02] active:scale-[0.98]"
                   >
                     {processing ? (
                       <>
@@ -305,10 +307,10 @@ export function ImageComplianceTool() {
         {/* Step 3: Fine-tune */}
         {currentStep === 3 && (
           <div className="animate-in fade-in slide-in-from-right-8 duration-500">
-            <Card className="border-none bg-white shadow-[0_30px_60px_-12px_rgba(0,0,0,0.3)] ring-1 ring-black/5 dark:bg-white dark:text-zinc-950">
+            <Card className="border-border bg-card shadow-[0_30px_60px_-12px_rgba(0,0,0,0.3)] ring-1 ring-border/5">
               <CardHeader className="space-y-1 py-6 text-center">
-                <CardTitle className="font-display text-3xl font-black tracking-tight text-zinc-950">Step 3: Fine-tune</CardTitle>
-                <CardDescription className="text-sm font-medium text-zinc-400">Adjust the focal point and framing manually</CardDescription>
+                <CardTitle className="font-display text-3xl font-black tracking-tight text-foreground">Step 3: Fine-tune</CardTitle>
+                <CardDescription className="text-sm font-medium text-muted-foreground">Adjust the focal point and framing manually</CardDescription>
               </CardHeader>
               <CardContent className="px-10 pb-8">
                 <CropEditor
@@ -322,7 +324,7 @@ export function ImageComplianceTool() {
                 <div className="mt-8 flex justify-center">
                   <Button 
                     size="lg" 
-                    className="h-12 w-full bg-emerald-600 font-black uppercase tracking-widest text-white shadow-xl shadow-emerald-600/20 transition-all hover:bg-emerald-700 hover:scale-[1.01] active:scale-[0.98] dark:bg-emerald-500 dark:hover:bg-emerald-600" 
+                    className="h-12 w-full bg-primary font-black uppercase tracking-widest text-primary-foreground shadow-xl shadow-primary/20 transition-all hover:bg-primary/90 hover:scale-[1.01] active:scale-[0.98]" 
                     onClick={() => onProcess(4)}
                     disabled={processing}
                   >
@@ -346,21 +348,21 @@ export function ImageComplianceTool() {
         {/* Step 4: Result */}
         {currentStep === 4 && (
           <div className="animate-in zoom-in-95 fade-in duration-500">
-            <Card className="border-none bg-white shadow-[0_30px_60px_-12px_rgba(0,0,0,0.4)] ring-1 ring-black/5 dark:bg-white dark:text-zinc-950">
+            <Card className="border-border bg-card shadow-[0_30px_60px_-12px_rgba(0,0,0,0.4)] ring-1 ring-border/5">
               <CardHeader className="space-y-1 py-6 text-center">
                 <div className="flex items-center justify-center gap-3">
-                  <CardTitle className="font-display text-3xl font-black tracking-tight text-zinc-950">Step 4: Result</CardTitle>
-                  <div className="flex size-8 items-center justify-center rounded-full bg-emerald-500/10 text-emerald-600 shadow-[0_0_15px_rgba(16,185,129,0.1)]">
+                  <CardTitle className="font-display text-3xl font-black tracking-tight text-foreground">Step 4: Result</CardTitle>
+                  <div className="flex size-8 items-center justify-center rounded-full bg-primary/10 text-primary shadow-[0_0_15px_var(--color-primary)]/10">
                     <div className="text-sm font-bold">✓</div>
                   </div>
                 </div>
-                <CardDescription className="text-sm font-medium text-emerald-600/60">Compliance check passed successfully</CardDescription>
+                <CardDescription className="text-sm font-medium text-primary/60">Compliance check passed successfully</CardDescription>
               </CardHeader>
               <CardContent className="px-10 pb-8">
                 <div className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
                   <Button 
                     size="lg" 
-                    className="h-12 bg-emerald-600 font-black uppercase tracking-widest text-white shadow-lg shadow-emerald-600/20 transition-all hover:bg-emerald-700 hover:scale-[1.02] active:scale-[0.98] dark:bg-emerald-500 dark:hover:bg-emerald-600"
+                    className="h-12 bg-primary font-black uppercase tracking-widest text-primary-foreground shadow-lg shadow-primary/20 transition-all hover:bg-primary/90 hover:scale-[1.02] active:scale-[0.98]"
                     onClick={onDownload}
                   >
                     <Download className="mr-2 size-4" /> Download Image
@@ -369,7 +371,7 @@ export function ImageComplianceTool() {
                   <Button 
                     size="lg" 
                     variant="outline"
-                    className="h-12 border-zinc-200 font-bold uppercase tracking-widest text-zinc-600 transition-all hover:bg-zinc-50 hover:text-emerald-600 dark:border-white/10 dark:text-zinc-400 dark:hover:bg-zinc-800"
+                    className="h-12 border-border font-bold uppercase tracking-widest text-muted-foreground transition-all hover:bg-secondary hover:text-primary"
                     onClick={() => {
                       setFile(null);
                       setResult(null);
@@ -384,7 +386,7 @@ export function ImageComplianceTool() {
                   <Button 
                     variant="outline" 
                     size="lg" 
-                    className="h-12 border-zinc-200 font-bold uppercase tracking-widest text-zinc-600 transition-all hover:bg-zinc-50 hover:text-emerald-600 dark:border-white/10 dark:text-zinc-400 dark:hover:bg-zinc-800" 
+                    className="h-12 border-border font-bold uppercase tracking-widest text-muted-foreground transition-all hover:bg-secondary hover:text-primary" 
                     onClick={() => setCurrentStep(2)}
                   >
                     Refactor Specs
@@ -393,7 +395,7 @@ export function ImageComplianceTool() {
                   <Button 
                     variant="outline" 
                     size="lg" 
-                    className="h-12 border-zinc-200 font-bold uppercase tracking-widest text-zinc-600 transition-all hover:bg-zinc-50 hover:text-emerald-600 dark:border-white/10 dark:text-zinc-400 dark:hover:bg-zinc-800" 
+                    className="h-12 border-border font-bold uppercase tracking-widest text-muted-foreground transition-all hover:bg-secondary hover:text-primary" 
                     onClick={() => setCurrentStep(3)}
                   >
                     Re-Adjust Frame

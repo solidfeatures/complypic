@@ -116,7 +116,7 @@ export function ImageUploader({ file, previewUrl, onChange }: ImageUploaderProps
                   type="button" 
                   variant="outline" 
                   size="sm" 
-                  className="h-8 w-fit bg-emerald-600/5 px-4 text-[10px] font-black uppercase tracking-widest text-emerald-600 transition-all hover:bg-emerald-600 hover:text-white dark:border-emerald-500/20 dark:text-emerald-400 dark:hover:bg-emerald-500 dark:hover:text-white" 
+                  className="h-8 w-fit border-primary/20 bg-primary/5 px-4 text-[10px] font-black uppercase tracking-widest text-primary transition-all hover:bg-primary hover:text-primary-foreground dark:border-primary/20" 
                   onClick={onBrowse}
                 >
                   <ImageIcon className="mr-1.5 size-3.5" aria-hidden="true" />

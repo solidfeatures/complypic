@@ -34,7 +34,7 @@ export default function Page() {
             </div>
             <h2 className="text-balance text-3xl font-semibold tracking-tight text-foreground sm:text-5xl">
               Make any photo meet{" "}
-              <span className="bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-primary to-accent-foreground bg-clip-text text-transparent">
                 official requirements
               </span>
             </h2>

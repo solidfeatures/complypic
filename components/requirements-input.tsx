@@ -68,7 +68,7 @@ export function RequirementsInput({
                 type="number"
                 value={value.width}
                 onChange={(e) => update("width", Number.parseInt(e.target.value) || 0)}
-                className="h-12 w-full transition-all focus:ring-emerald-500/20"
+                className="h-12 w-full transition-all focus:ring-primary/20"
               />
             </div>
             <div className="min-w-0 space-y-2">
@@ -80,7 +80,7 @@ export function RequirementsInput({
                 type="number"
                 value={value.height}
                 onChange={(e) => update("height", Number.parseInt(e.target.value) || 0)}
-                className="h-12 w-full transition-all focus:ring-emerald-500/20"
+                className="h-12 w-full transition-all focus:ring-primary/20"
               />
             </div>
           </div>
@@ -99,7 +99,7 @@ export function RequirementsInput({
                 </Tooltip>
               </div>
               <Select value={String(value.dpi)} onValueChange={(v) => update("dpi", Number.parseInt(v))}>
-                <SelectTrigger id="dpi" className="h-12 w-full transition-all focus:ring-emerald-500/20">
+                <SelectTrigger id="dpi" className="h-12 w-full transition-all focus:ring-primary/20">
                   <SelectValue placeholder="DPI" className="truncate" />
                 </SelectTrigger>
                 <SelectContent>
@@ -123,7 +123,7 @@ export function RequirementsInput({
                 </Tooltip>
               </div>
               <Select value={value.format} onValueChange={(v) => update("format", v as ImageFormat)}>
-                <SelectTrigger id="format" className="h-12 w-full transition-all focus:ring-emerald-500/20">
+                <SelectTrigger id="format" className="h-12 w-full transition-all focus:ring-primary/20">
                   <SelectValue placeholder="Format" className="truncate" />
                 </SelectTrigger>
                 <SelectContent>
@@ -149,7 +149,7 @@ export function RequirementsInput({
                 </Tooltip>
               </div>
               <Select value={value.fit} onValueChange={(v) => update("fit", v as FitMode)}>
-                <SelectTrigger id="fit" className="h-12 w-full transition-all focus:ring-emerald-500/20">
+                <SelectTrigger id="fit" className="h-12 w-full transition-all focus:ring-primary/20">
                   <SelectValue placeholder="Fit Mode" className="truncate" />
                 </SelectTrigger>
                 <SelectContent>
@@ -166,7 +166,7 @@ export function RequirementsInput({
                 value={value.maxFileSizeKb || ""}
                 placeholder="Unlimited"
                 onChange={(e) => update("maxFileSizeKb", Number.parseInt(e.target.value) || undefined)}
-                className="h-12 w-full transition-all focus:ring-emerald-500/20"
+                className="h-12 w-full transition-all focus:ring-primary/20"
               />
             </div>
           </div>
@@ -190,7 +190,7 @@ export function RequirementsInput({
                     <span className="truncate font-display text-base font-bold tracking-tight text-foreground">{category}</span>
                     <span className="flex items-center gap-1.5 text-[10px] font-bold text-muted-foreground/40">
                       {hasActive && (
-                        <span className="inline-flex size-1.5 rounded-full bg-primary shadow-[0_0_8px_rgba(16,185,129,0.5)]" aria-hidden="true" />
+                        <span className="inline-flex size-1.5 rounded-full bg-primary shadow-[0_0_8px_var(--color-primary)]" aria-hidden="true" />
                       )}
                       {items.length} options
                     </span>
